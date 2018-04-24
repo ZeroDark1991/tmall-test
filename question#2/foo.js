@@ -1,4 +1,4 @@
-
+// 算法复杂度O(n^2)
 function foobar (s) {
   if(typeof s !== 'string') { return }
 
@@ -38,8 +38,6 @@ Array.prototype.equal = function (arr) {
     console.error('failed')
   }
 }
-
-console.log(foobar('123'))
 
 foobar('12').equal(['1', '2'])
 foobar('22').equal(['22'])

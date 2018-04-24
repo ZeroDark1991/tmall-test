@@ -49,7 +49,6 @@ let table = new MyTable({
 		{
 			text: '删除',
 			trigger: function(scope) {
-        console.log(1)
         let index = scope.dataset.rowIndex
         if(index) {
           table.setLoading(true)

@@ -4,8 +4,21 @@ const { isObject, isDomNode, isArray, isDef, isUndef } = require('./utils.js')
 
 const eventCollector = new EventCollector()
 /**
- * MyTable
- * @param {string}
+ * MyTable Class
+ * @constructor
+ * @param {Object} config
+ * @param {Object []} config.data 表格数据
+ *
+ * @param {Object []} config.head 表头数据
+ *    @param {string} config.head[].key 表头数据项中的key对应 config.data[]的属性名
+ *    @param {string} config.head[].label 表头数据项的名称
+ *
+ * @param {Object []} config.actions
+ *    @param {string} config.actions[].text 操作栏的按钮名称
+ *    @param {function} config.actions[].trigger 操作按钮点击时触发的callback
+ *    @param {Object} config.actions[].events 对应row下各个cell绑定的事件
+ *
+ * @param {string= | domNode} config.container 表格的容器，默认值为document.body
  */
 class MyTable {
 	constructor(config) {
@@ -51,6 +64,7 @@ class MyTable {
     this.$element = tableContainer
 	}
 
+  // 生成表头
   generateTableHead() {
     let tableHead = createElementWithClass('div', 'table__head')
     if(!isArray(this.head)) {
@@ -82,6 +96,7 @@ class MyTable {
     return tableHead
   }
 
+  // 生成表格主体
   generateTableBody() {
     let tableBody = createElementWithClass('div', 'table__body')
     let loadingMask = createElementWithClass('div', 'loading-mask')
@@ -135,6 +150,7 @@ class MyTable {
     return tableBody
   }
 
+  // 生成操作按钮
   generateActionButtons(row) {
     let actions = this.actions
     let column = createElementWithClass('div', 'table__column', 'action')
@@ -176,6 +192,7 @@ class MyTable {
     }
   }
 
+  // 重新装载表格
   reload(data) {
     if(isUndef(data)) { return }
     let cachedOldData = this.data
@@ -190,12 +207,14 @@ class MyTable {
 
   updateRow() {}
 
+  // 删除行
   removeRow(index) {
     this.data.splice(index, 1)
     let target = this.$element.querySelector(`[data-row-index="${index}"]`)
     target && target.remove()
   }
 
+  // Loading开关
   setLoading(bool) {
     let loadingMask = this.$element.querySelector('.loading-mask')
     if(bool === true) {
